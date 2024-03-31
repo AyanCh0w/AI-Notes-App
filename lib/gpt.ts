@@ -1,17 +1,17 @@
-import fs from "fs";
-import path from "path";
-import { File } from "formidable";
-import { openai } from "../openai";
+import fs from "fs"
+import path from "path"
+import { File } from "formidable"
+import { openai } from "../openai"
 
 export const transcribeFile = async (audioFile: File) => {
-  const extension = path.extname(audioFile.originalFilename!);
-  const newpath = audioFile.filepath + extension;
-  fs.rename(audioFile.filepath, newpath, (err) => console.log(err));
+  const extension = path.extname(audioFile.originalFilename!)
+  const newpath = audioFile.filepath + extension
+  fs.rename(audioFile.filepath, newpath, (err) => console.log(err))
   return await openai.audio.transcriptions.create({
     file: fs.createReadStream(newpath),
     model: "whisper-1",
-  });
-};
+  })
+}
 
 export async function gptAnalysis(transcription: string) {
   const completion = await openai.chat.completions.create({
@@ -48,6 +48,6 @@ export async function gptAnalysis(transcription: string) {
     ],
     model: "gpt-3.5-turbo",
     //response_format: { type: "json_object" },
-  });
-  return completion.choices[0].message.content;
+  })
+  return completion.choices[0].message.content
 }
