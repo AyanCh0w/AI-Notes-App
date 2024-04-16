@@ -38,8 +38,7 @@ export async function gptAnalysis(transcription: string) {
             { "type": "summary", "content": "This is a summary" },
             {
               "type": "question",
-              "question": "how do i do this?",
-              "answer": "this is an answer"
+              "content": "how do i do this?|this is an answer
             },
             { "type": "summary", "content": "This is a summary" }
           ]
