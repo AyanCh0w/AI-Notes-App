@@ -1,11 +1,14 @@
+import { Timestamp } from "firebase/firestore"
+
 interface transcriptionData {
   type: string
   content: string
 }
 
-interface noteData {
+export interface noteData {
   subject: string
   creator: string
   data: transcriptionData[]
-  date: Date
+  date: Timestamp
+  title: string
 }

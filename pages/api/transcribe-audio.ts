@@ -27,7 +27,9 @@ export default async function handler(
 
   if (audioFile && audioFile.originalFilename) {
     const transcription = await transcribeFile(audioFile)
+    console.log(transcription.text)
     const message = await gptAnalysis(transcription.text)
+    console.log(message)
 
     return res.status(200).json({ transcription: message })
   }

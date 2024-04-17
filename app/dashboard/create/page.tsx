@@ -1,3 +1,4 @@
+"use client"
 import { gptAnalysis, audioTranscribe } from "@/actions"
 import {
   Select,
@@ -12,13 +13,12 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { collection, addDoc, Timestamp } from "firebase/firestore"
+import { db } from "@/firebase"
 
 export default function Create() {
   const [selectedFile, setFile] = useState<File | undefined>(undefined)
   const [subject, setSubject] = useState<string>("")
-  const [data, setData] = useState([
-    { type: "summary", content: "This is a summary" },
-  ])
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {
@@ -27,7 +27,6 @@ export default function Create() {
   }
 
   async function handleAudioSubmission(e: any) {
-    console.log("starting")
     e.preventDefault()
     const formData = new FormData()
     formData.append("file", selectedFile as File)
@@ -40,8 +39,15 @@ export default function Create() {
       })
       const result = await res.json()
       console.log(result.transcription)
-      setData(JSON.parse(result.transcription))
-      // Process the result as required
+
+      const docRef = await addDoc(collection(db, "notes"), {
+        subject: subject,
+        creator: "ayan",
+        data: JSON.parse(result.transcription),
+        date: new Timestamp(Date.now(), 0),
+        title: "Add user defined title",
+      })
+      window.location.href = `/dashboard/note/${docRef.id}`
     } catch (error) {
       console.error("Failed to transcribe audio:", error)
     }

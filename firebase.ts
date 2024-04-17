@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCrgPI8-G8P9jUH4hAMxm9cj2AenRy3IcI",
+  apiKey: "AIzaSyCrgPI8-G8P9jUH4hAMxm9cj2AenRy3IcI", // process.env.FIREBASE_API_KEY,
   authDomain: "delta-notes.firebaseapp.com",
   projectId: "delta-notes",
   storageBucket: "delta-notes.appspot.com",
@@ -15,5 +15,5 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig)
-export default app
+export const app = initializeApp(firebaseConfig)
+export const db = getFirestore(app)
